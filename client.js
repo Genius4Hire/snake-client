@@ -15,6 +15,16 @@ const connect = function () {
   
   });
 
+  conn.on("connect", () => {
+    console.log("Connected!")
+    conn.write("Name: JAD");
+    // setInterval(()=> {
+    //   conn.write("Move: up");
+    // }, 250);
+
+  })
+
+
   return conn;
 };
 
