@@ -1,22 +1,29 @@
-// set up standard in, so that we can interact with user input
-const setupInput = function () {
+let connection;
+
+const setupInput = function (connectionInstance) {
   const stdin = process.stdin;
+  connection = connectionInstance;
   stdin.setRawMode(true);
   stdin.setEncoding("utf8");
   stdin.resume();
-
-  stdin.on("data", (key) => {
-    switch (key) {
-      case 'w' : process.stdout.write("Wow!"); break;
-      case '\u0003' : process.exit(); break;
-      case 'x' : process.exit(); break;
-    
-      default : break;
-    }
-
-  })
-  console.log("After callback!")
+  stdin.on("data", handleUserInput);
   return stdin;
 };
+
+
+// set up standard in, so that we can interact with user input
+const handleUserInput = function (key) {
+  switch (key) {
+    case 'w' : connection.write("Move: up"); break;
+    case 'a' : connection.write("Move: left"); break;
+    case 's' : connection.write("Move: down"); break;
+    case 'd' : connection.write("Move: right"); break;
+    // case '\u0003' : process.exit(); break; not working in ubuntu.. using 'x' to quit instead
+    case 'x' : process.exit(); break;
+    default : break;
+  }
+
+};
+
 
 module.exports = {setupInput};
